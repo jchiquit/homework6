@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<!-- You can add your style here rather than in an external style sheet. -->
+<style>
+	canvas {
+	    border:5px solid #d3d3d3;
+	    background-color: #f1f1f1;
+	    display: block;
+	}
+</style>
+</head>
+<body>
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500"  ></canvas>
+    <input type = "color" id = "picker"/>
+
+<script>
+		var canvas = document.querySelector("#myCanvas");
+		var ctx = canvas.getContext("2d");
+		var color = "red"
+		// will use this for picking up the pen
+		var draw_pen = true
+		// 80% of the window
+		myCanvas.height = window.innerHeight*.8;
+		myCanvas.width = window.innerWidth*.8;
+		// drawing the circle - red circle with a radius of 10
+		function draw(posX, posY){
+      ctx.fillStyle = color;
+      console.log("Drawing!")
+      ctx.beginPath()
+      ctx.arc(posX, posY, 10, 0, 2 * Math.PI);
+      ctx.fill();
+		}
+		// this block positions the the cursor right at the middle of the circle (5 cause i tested other numbers and 5 looks like it worked)
+		// the draw function is called with the new coordinates for the cursor
+			myCanvas.addEventListener(
+				'mousemove', function(e){
+					posX = e.x - this.offsetLeft - 5;
+					posY = e.y - this.offsetTop - 5;
+				  if (draw_pen){
+					console.log(e.x);
+	        console.log(e.y);
+	        draw(posX, posY);
+				}
+		})
+
+		// write the series of if statments to change the color
+    window.addEventListener(
+      'keydown', function(e){
+        console.log(e);
+				// e is event, 66 is 'b'
+				if (e.keyCode == 66){
+          color="blue";
+				}
+				// 89 is 'y'
+				if (e.keyCode == 89){
+					color="yellow";
+				}
+				// 71 is g
+				if (e.keyCode == 71){
+					color="green";
+				}
+				// space bar is 32
+				if (e.keyCode ==32){
+					ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+				}})
+
+		//this addEventListener picks up pen (up arrow) and drops the pen (down arrow)
+		window.addEventListener(
+	    'keydown', function(e){
+				console.log("pen is pickup/dropped")
+				if (e.keyCode == 38){
+					draw_pen=false;
+				}
+				if(e.keyCode == 40){
+					draw_pen=true;
+				}
+			})
+			// selecting picker id and changes the color based on user selection 
+			picker.addEventListener('change', function(e){
+				color=this.value;
+			})
+
+</script>
+</body>
+</html>
